@@ -55,8 +55,8 @@ Example
 #~
 ```
 # Dependencies
-* IPy
-* PrettyTable
+* [IPy](https://pypi.python.org/pypi/IPy)
+* [PrettyTable](https://pypi.python.org/pypi/PrettyTable)
 
 # Installation
 Download the master branch and install it using setuptools.
