@@ -85,11 +85,12 @@ def main():
         options = {'domain': options.domain, 'subdomain': options.sub,
                    'type': options.rtype.split(","), 'grep':options.grep,
                    'regex': options.regex, 'environment': options.env,
-                   'server': options.server}
+                   'server': options.server, 'delimiter': options.delimiter,
+                   'fields': options.fields.split(",")}
         DNSAdmin = DNSQuery(options['server'])
         Records = DNSAdmin.get_records(options)
-        DNSAdmin.display_output(Records, options.fields.split(","),
-                                options.delimiter)
+        DNSAdmin.display_output(Records, options['fields'], 
+                                options['delimiter'])
     else:
         print("DNSQuery: Required arguments missing or invalid.")
         print(parser.print_help())
