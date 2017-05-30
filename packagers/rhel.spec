@@ -1,7 +1,7 @@
 Summary:                 DevOps Tools.
 Name:                    devops-tools
-Version:                 1.0.0
-Release:                 1%{?dist}
+Version:                 9999
+Release:                 1
 License:                 GPLv3
 URL:                     https://github.com/sergiotocalini/devops-tools
 Source0:                 https://github.com/sergiotocalini/devops-tools/archive/master.zip
