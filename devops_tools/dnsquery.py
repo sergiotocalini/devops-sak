@@ -3,7 +3,6 @@ import dns.query
 import dns.zone
 import re
 import sys
-from optparse import OptionParser
 
 class DNSQuery():
     def __init__(self, server):
@@ -30,7 +29,8 @@ class DNSQuery():
         if opt['environment'] != None:
             opt['domain'] = '%(environment)s.%(domain)s' %opt
 
-        filter_subdomain = re.compile('.*%s$' %opt['subdomain'], re.IGNORECASE)
+        filter_subdomain = re.compile('.*%s$' %opt['subdomain'],
+                                      re.IGNORECASE)
         filter_hostname = re.compile(opt['regex'], re.IGNORECASE)
 
         zone, records = self.get_zone(opt['domain'])
@@ -43,8 +43,12 @@ class DNSQuery():
                         if filter_hostname.match(row[0]):
                             if (opt['grep'].lower() in row[0].lower()):
                                 hostname = '.'.join([row[0], opt['domain']])
-                                list_rec.append({'ip':row[4], 'host':hostname,
-                                                 'type':row[3] , 'ttl':row[1]})
+                                list_rec.append(
+                                    {
+                                        'ip':row[4], 'host':hostname,
+                                        'type':row[3] , 'ttl':row[1]
+                                    }
+                                )
         return list_rec
                 
     def display_output(self, records, options, delimiter):
@@ -52,24 +56,20 @@ class DNSQuery():
         for d in records:
             for o in options: d.setdefault(o, "")
             print(base_string % d)
-
-def main(server, env, domain, sub, rtype, delimiter, fields, grep, regex):
-    options = {'domain':domain, 'subdomain':sub, 'type':rtype,
-               'grep':grep, 'regex':regex, 'environment':env}
-    DNSAdmin = DNSQuery(server)
-    Records = DNSAdmin.get_records(options)
-    DNSAdmin.display_output(Records, fields, delimiter)
     
-if __name__ == '__main__':
+def main():
+    from optparse import OptionParser
     parser = OptionParser()
     parser.add_option("-G", "--grep", dest="grep", default='',
                       help="Grep output.", metavar="str")
-    parser.add_option("-d", "--domain", dest="domain", default="aws.vostu.com",
+    parser.add_option("-d", "--domain", dest="domain",
+                      default="aws.vostu.com",
                       help="Domain", metavar="str")
     parser.add_option("-e", "--environment", dest="env", default=None,
                       help="Environment query.", metavar="str")
     parser.add_option("-f", "--fields", dest="fields", default="ip,host",
-                      help="Display fields (ip, name, type).", metavar="list")
+                      help="Display fields (ip, name, type).",
+                      metavar="list")
     parser.add_option("-g", "--game", dest="sub", default='',
                       help="Game query.", metavar="str")
     parser.add_option("-r", "--regex", dest='regex', default='.*',
@@ -82,10 +82,17 @@ if __name__ == '__main__':
                       help="Delimiter", metavar="str")
     (options, args) = parser.parse_args()
     if options.server and options.domain:
-        main(options.server, options.env, options.domain,
-             options.sub, options.rtype.split(","), options.delimiter,
-             options.fields.split(","), options.grep, options.regex)
+        options = {'domain': options.domain, 'subdomain': options.sub,
+                   'type': options.rtype.split(","), 'grep':options.grep,
+                   'regex': options.regex, 'environment': options.env}
+        DNSAdmin = DNSQuery(options.server)
+        Records = DNSAdmin.get_records(options)
+        DNSAdmin.display_output(Records, options.fields.split(","),
+                                options.delimiter)
     else:
         print("DNSQuery: Required arguments missing or invalid.")
         print(parser.print_help())
         sys.exit(-1)
+
+if __name__ == '__main__':
+    main()

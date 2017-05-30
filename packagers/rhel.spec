@@ -10,6 +10,8 @@ BuildArch:               noarch
 Requires:                python
 Requires:                python-dns
 Requires:                python-setuptools
+Requires:                python-prettytable
+Requires:                python-ipy
 
 %description
 DevOps Tools is a set of tools to help the DevOps, ItOps or SysAdmin to update manage the infrastructure in an easy way.
@@ -17,7 +19,7 @@ DevOps Tools is a set of tools to help the DevOps, ItOps or SysAdmin to update m
 %clean
 
 %prep
-%setup -q -n devops_tools-%{version}
+%setup -q -n devops-tools-master
 
 %build
 %{__python} setup.py build
@@ -29,6 +31,7 @@ DevOps Tools is a set of tools to help the DevOps, ItOps or SysAdmin to update m
 %defattr(-,root,root,-)
                         %{python_sitelib}/devops_tools
 			%{python_sitelib}/devops_tools-*-py2.*.egg-info
+%attr(755,-,-)          /usr/bin
 
 %changelog
 * Sat Jul 23 2016 Sergio Tocalini Joerg <sergiotocalini@gmail.com> - 1.0.0

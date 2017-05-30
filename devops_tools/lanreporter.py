@@ -1,8 +1,6 @@
 #!/usr/bin/env python2
-
 import sys
 from lib.nmap import PortScanner
-from optparse import OptionParser
 from prettytable import PrettyTable
 from IPy import IP
 
@@ -50,21 +48,12 @@ def display_output(headers, rows):
             table.add_row([x[o] for o in headers])
     print (table)
 
-def main(src, fields, filename):
-    hostfound = {}
-    for i in src:
-        hostfound[i] = source_scan(i)
-
-    if filename is None:
-        display_output(fields, hostfound)
-    else:
-        output = Output(filename)
-        output.excel(fields, hostfound)
-
-if __name__ == '__main__':
+def main():
+    from optparse import OptionParser
     parser = OptionParser(usage="usage: %prog [action] [options]",
                           version="%prog 0.0.1")
-    parser.add_option("-f","--fields",dest="fields",default="ipv4,mac,hostname",
+    parser.add_option("-f", "--fields", dest="fields",
+                      default="ipv4,mac,hostname",
                       help="Display fields (ip, name, type).")
     parser.add_option("-o","--output", dest="output", default=None,
                       help="Output format:filename (default=stdout).",
@@ -74,9 +63,19 @@ if __name__ == '__main__':
 
     (options, args) = parser.parse_args()
     if options.sources:
-        main(options.sources.split(","), options.fields.split(","),
-             options.output)
+        hostfound = {}
+        for i in options.sources.split(","):
+            hostfound[i] = source_scan(i)
+            
+        if options.output is None:
+            display_output(options.fields.split(","), hostfound)
+        else:
+            output = Output(options.output)
+            output.excel(options.fields.split(","), hostfound)
     else:
         print("Required arguments missing or invalid.")
         print(parser.print_help())
         sys.exit(-1)
+
+if __name__ == '__main__':
+    main()
