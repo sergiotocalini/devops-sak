@@ -84,8 +84,9 @@ def main():
     if options.server and options.domain:
         options = {'domain': options.domain, 'subdomain': options.sub,
                    'type': options.rtype.split(","), 'grep':options.grep,
-                   'regex': options.regex, 'environment': options.env}
-        DNSAdmin = DNSQuery(options.server)
+                   'regex': options.regex, 'environment': options.env,
+                   'server': options.server}
+        DNSAdmin = DNSQuery(options['server'])
         Records = DNSAdmin.get_records(options)
         DNSAdmin.display_output(Records, options.fields.split(","),
                                 options.delimiter)
