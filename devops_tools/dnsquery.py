@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import dns.query
 import dns.zone
+import dns.resolver
+import random
 import re
 import sys
 
@@ -47,31 +49,46 @@ class DNSQuery():
         for d in records:
             for o in options: d.setdefault(o, "")
             print(base_string % d)
-    
+
+            
+def get_default_resolver(attr):
+    default = dns.resolver.get_default_resolver()
+    if attr == 'nameserver':
+        if default.nameservers:
+            return default.nameservers[0] if not default.rotate else random.choice(default.nameservers)
+    elif attr == 'domain':
+        dom = default.domain.to_text()
+        if not dom or dom == 'local.':
+            dom = default.search[0].to_text()[:-1] if default.search else None
+        return dom
+    return None
+
+
 def main():
     from optparse import OptionParser
     parser = OptionParser()
-    parser.add_option("-d", "--domain", dest="domain",
-                      default="aws.vostu.com",
-                      help="Domain", metavar="str")
+    parser.add_option("-d", "--domain", dest="domain", default=None,
+                      help="Specify the domain.", metavar="str")
     parser.add_option("-f", "--fields", dest="fields", default="ip,host",
                       help="Display fields (ip, name, type).",
                       metavar="list")
     parser.add_option("-r", "--regex", dest='regex', default='.*',
                       help="Regular Expression.", metavar="str")
-    parser.add_option("-s", "--server", dest="server", default="dns1",
+    parser.add_option("-s", "--server", dest="server", default=None,
                       help="DNS Server", metavar="str")
     parser.add_option("-t", "--type", dest="rtype", default="A,CNAME",
                       help="Type filter", metavar="list")
     parser.add_option("-D", "--delimiter", dest="delimiter", default="\t",
                       help="Delimiter", metavar="str")
     (options, args) = parser.parse_args()
-    if options.server and options.domain:
+
+    server = options.server if options.server else get_default_resolver('nameserver')
+    domain = options.domain if options.domain else get_default_resolver('domain')
+    if domain and server:
         options = {
-            'domain': options.domain,
+            'server': server, 'domain': domain,
             'type': [t.upper() for t in options.rtype.split(",")],
             'regex': options.regex,
-            'server': options.server,
             'delimiter': options.delimiter,
             'fields': [f.lower() for f in options.fields.split(",")]
         }
