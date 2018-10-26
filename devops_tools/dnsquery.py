@@ -73,7 +73,7 @@ def main():
             'regex': options.regex,
             'server': options.server,
             'delimiter': options.delimiter,
-            'fields': [f.lower() for l in options.fields.split(",")]
+            'fields': [f.lower() for f in options.fields.split(",")]
         }
         DNSAdmin = DNSQuery(options['server'])
         Records = DNSAdmin.get_records(options)
