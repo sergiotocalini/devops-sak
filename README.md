@@ -7,21 +7,18 @@ DevOps Tools is a set of tools to help the DevOps, ItOps or SysAdmin to update m
 Usage
 ```
 #~ dnsquery -h
-Usage: dnsquery [options]
+Usage: dnsquery.py [options]
 
 Options:
   -h, --help            show this help message and exit
-  -G str, --grep=str    Grep output.
-  -d str, --domain=str  Domain
-  -e str, --environment=str
-                        Environment query.
+  -d str, --domain=str  Specify the domain.
   -f list, --fields=list
                         Display fields (ip, name, type).
-  -g str, --game=str    Game query.
   -r str, --regex=str   Regular Expression.
   -s str, --server=str  DNS Server
   -t list, --type=list  Type filter
-  --delimiter=str       Delimiter
+  -D str, --delimiter=str
+                        Delimiter
 #~ 
 ```
 
@@ -55,6 +52,12 @@ Example
 #~
 ```
 # Dependencies
+## Operative System
+* pip
+* [nmap](https://nmap.org/)
+
+## Python libraries
+* [dnspython](https://pypi.org/project/dnspython)
 * [IPy](https://pypi.python.org/pypi/IPy)
 * [PrettyTable](https://pypi.python.org/pypi/PrettyTable)
 
