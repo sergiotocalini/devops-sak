@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 import sys
-from lib.nmap import PortScanner
+import os
 from prettytable import PrettyTable
 from IPy import IP
+
+sys.path.insert(0, os.path.dirname(__file__))
+
+from lib.nmap import PortScanner
 
 class Output():
     def __init__(self, filename):
