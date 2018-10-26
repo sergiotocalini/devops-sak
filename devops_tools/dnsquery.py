@@ -15,8 +15,7 @@ class DNSQuery():
         except:
             print("Zone doesn't found.")
             exit(1)
-        records = zone.nodes.keys()
-        records.sort()
+        records = sorted(zone.nodes.keys())
         return zone, records
 
     def get_records(self, opt):
