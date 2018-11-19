@@ -91,7 +91,7 @@ def main():
             'fields': [f.lower() for f in options.fields.split(",")]
         }
         DNSAdmin = DNSQuery(options['server'])
-        Records = DNSAdmin.get_records(options)
+        Records = DNSAdmin.get_records(**options)
         DNSAdmin.display_output(Records, options['fields'], 
                                 options['delimiter'])
     else:
