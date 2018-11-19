@@ -20,29 +20,27 @@ class DNSQuery():
         records = sorted(zone.nodes.keys())
         return zone, records
 
-    def get_records(self, opt):
-        opt.setdefault('grep', '')
-        opt.setdefault('regex', '.*')
-        opt.setdefault('type', ['A', 'CNAME'])
+    def get_records(self, **kwargs):
+        kwargs.setdefault('regex', '.*')
+        kwargs.setdefault('type', ['A', 'CNAME'])
 
-        filter_hostname = re.compile(opt['regex'], re.IGNORECASE)
+        filter_hostname = re.compile(kwargs['regex'], re.IGNORECASE)
 
-        zone, records = self.get_zone(opt['domain'])
-        list_rec = []
+        zone, records = self.get_zone(kwargs['domain'])
+        result = []
         for i in records:
             for x in zone[i].to_text(i).split("\n"):
                 row = x.split(" ")
-                if (opt['type'] == "*") or (row[3] in opt['type']):
-                    if filter_hostname.match(row[0]):
-                        if (opt['grep'].lower() in row[0].lower()):
-                            hostname = '.'.join([row[0], opt['domain']])
-                            list_rec.append(
-                                {
-                                    'ip':row[4], 'host':hostname,
-                                    'type':row[3] , 'ttl':row[1]
-                                }
-                            )
-        return list_rec
+                if (kwargs['type'] == "*") or (row[3] in kwargs['type']):
+                    hostname = '.'.join([row[0], kwargs['domain']])
+                    if filter_hostname.match(hostname):
+                        result.append({
+                            'ip': row[4],
+                            'host': hostname,
+                            'type': row[3],
+                            'ttl': row[1]
+                        })
+        return result
                 
     def display_output(self, records, options, delimiter):
         base_string = delimiter.join(["%(" + o + ")s" for o in options])
