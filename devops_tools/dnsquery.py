@@ -57,7 +57,7 @@ def get_default_resolver(attr):
         if default.nameservers:
             return default.nameservers[0] if not default.rotate else random.choice(default.nameservers)
     elif attr == 'domain':
-        dom = default.domain.to_text()
+        dom = default.domain.to_text()[:-1]
         if not dom or dom == 'local.':
             dom = default.search[0].to_text()[:-1] if default.search else None
         return dom
