@@ -1,6 +1,6 @@
-# DevOps Tools
+# DevOps Swiss Army Knife
 
-DevOps Tools is a set of tools to help the DevOps, ItOps or SysAdmin to update manage the infrastructure in an easy way.
+DevOps Swiss Army Knife is a set of tools to help the DevOps, ItOps or SysAdmin to update manage the infrastructure in an easy way.
 
 # Tools
 ## dnsquery
@@ -63,9 +63,17 @@ Example
 
 # Installation
 Download the master branch and install it using setuptools.
+
+__**Source**__
 ```
-#~ wget -c "https://github.com/sergiotocalini/devops-tools/archive/master.zip"
+#~ wget -c "https://github.com/sergiotocalini/devops-sak/archive/master.zip"
 #~ unzip master.zip
-#~ cd devops-tools-master
-#~ sudo python setup.py install
+#~ cd devops-sak-master
+#~ sudo pip install .
+```
+
+__**PyPi**__
+```
+~# sudo pip install devops-sak
+~#
 ```
