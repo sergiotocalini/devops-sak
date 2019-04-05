@@ -1,5 +1,8 @@
 # DevOps Swiss Army Knife
 
+[![PyPI version](https://badge.fury.io/py/devops-sak.svg)](https://badge.fury.io/py/devops-sak)
+[![Repository License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg)](LICENSE)
+
 DevOps Swiss Army Knife is a set of tools to help the DevOps, ItOps or SysAdmin to update manage the infrastructure in an easy way.
 
 # Tools
